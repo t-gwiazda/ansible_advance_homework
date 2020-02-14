@@ -6,6 +6,7 @@
     state: present
     scm_branch: "{{scm_branch}}"
     scm_url: "{{scm_url}}"	
+    scm_type: git
 
 - name: Ansible lineinfile remove line example
   lineinfile:
