@@ -1,2 +1,4 @@
 ---
-# vars file for lb-tier
+# vars file for haproxy
+frontend_port: 80
+tomcat_port: 8080

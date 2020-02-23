@@ -28,6 +28,12 @@
 - name: setup database tier
   become: yes
   hosts: appdbs
+  vars:
+    postgresql_databases:
+    - name: example_db
+    postgresql_users:
+    - name: example_user
+      password: pgpasswd
   roles:
     - {name: base-config, tags: base-config}
     - {name: db-tier, tags: [dbs, postgres]}
