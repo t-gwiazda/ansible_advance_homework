@@ -1,5 +1,6 @@
 ---
 # vars file for roles/osp-lab
+workstation_user: cloud-user
 
 osp_networks:
   # Public Facing Network   
