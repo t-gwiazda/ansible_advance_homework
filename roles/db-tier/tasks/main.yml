@@ -1,22 +1,22 @@
 ---
 # tasks file for db-tier
-- name: Install PostgreSQL
+- name: install postgres
   yum:
     name: postgresql-server
-    state: present
+    state: latest
 
-- name: Check if PostgreSQL database is initialized
-  command: postgresql-check-db-dir /var/lib/pgsql/data
-  register: r_pg_check_output
-  changed_when: r_pg_check_output == 1
+- name: Check database initialization
+  command: postgresql-check-db-dir  /var/lib/pgsql/data
+  register: check_db_output
+  changed_when: check_db_output == 1
   ignore_errors: yes
-
-- name: PostgreSQL database initialization.
+      
+- name: initilize postgres
   shell: postgresql-setup initdb
-  when: r_pg_check_output.rc != 0
+  when: check_db_output.rc != 0
 
-- name: Start PostgreSQL
+- name: start postgres
   service:
-   name: postgresql
-   state: started
-   enabled: yes
+    name: postgresql
+    enabled: yes
+    state: started

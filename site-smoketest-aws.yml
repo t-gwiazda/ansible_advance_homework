@@ -1,6 +1,7 @@
 - hosts: frontends
   gather_facts: false
   tasks:
+
   - name: Smoke Test
     uri:
       url: "http://{{ inventory_hostname }}"

@@ -1,18 +1,18 @@
 - name: Create Homework Assignment project 
 # Use tower module or tower-cli to create Ansible Tower project. Name of the project is specifed in ./vars/main.yml
   tower_project:
-    name: "{{ proj_name }}"
-    organization: "{{ org_name }}"
+    name: "{{proj_name}}"
+    organization: "{{org_name}}"
     state: present
     scm_branch: "{{scm_branch}}"
-    scm_url: "{{scm_url}}"	
+    scm_url: "{{scm_url}}"
     scm_type: git
 
-- name: Ansible lineinfile remove line example
+- name: fix pem key
   lineinfile:
     dest: /root/.ssh/openstack.pem
     regexp: '^#'
-    state: absent
+    state: absent 
 
 - name: Machine Credentail to connect to workstation using openstack.pub
   tower_credential:
@@ -23,26 +23,21 @@
     tower_host: tower1.{{tower_GUID}}.example.opentlc.com
     tower_username: admin
     tower_password: r3dh4t1!
-    ssh_key_data: "/root/.ssh/openstack.pem"
+    ssh_key_data: "{{ lookup('file', '/root/.ssh/openstack.pem') }}"
     username: cloud-user
 
 - name: Create Inventory
   command: |
     tower-cli inventory create -n "{{static_inventory_name}}" --organization "{{org_name}}"
-
 - name: Create Group in static inventory 
   command: |
     tower-cli group create --inventory "{{static_inventory_name}}"  --name {{group_name}}
-
 - name: Add workstation host in tower_inventory 
   command: |
-    tower-cli host create --inventory "{{static_inventory_name}}" --name "{{host_name}}"
-
+    awx-cli host create --inventory "{{static_inventory_name}}" --name "{{host_name}}"
 - name: Associate workstation host to group 
   command: | 
-    tower-cli host associate --host "{{host_name}}" --group "{{group_name}}"
-
-
+    awx-cli host associate --host "{{host_name}}" --group "{{group_name}}"
 - name: Tower Creds key file
   tower_credential:
     name: "{{ opentlc_cred_name }}"
@@ -60,4 +55,3 @@
   file:
     name: /root/secret.pem
     state: absent
-
