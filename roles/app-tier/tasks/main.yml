@@ -1,5 +1,8 @@
 ---
 # tasks file for deploy_tomcat
+- name: Clean yum
+  command: yum clean all
+
 - name: install tomcat
   package:
     name: tomcat

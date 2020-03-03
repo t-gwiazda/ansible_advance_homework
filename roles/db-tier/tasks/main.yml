@@ -1,5 +1,8 @@
 ---
 # tasks file for db-tier
+- name: Clean yum
+  command: yum clean all
+
 - name: install postgres
   yum:
     name: postgresql-server
