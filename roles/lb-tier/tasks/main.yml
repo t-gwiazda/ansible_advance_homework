@@ -1,6 +1,9 @@
 ---
 # tasks file for lb-tier
 
+- name: Clean yum
+  command: yum clean all
+
 - name: Install HAProxy
   yum:
    name: haproxy
